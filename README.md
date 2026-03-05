@@ -1,80 +1,70 @@
+# ebt-translations
 
-# data format
-- markdown
-- json
+A database and toolset for collecting, comparing, and presenting multiple translations of Early Buddhist Texts (EBTs).
 
-# language
-- python
-- sqlalchemy
+## Tech Stack
 
-# database
-- sqlite
+- **Language:** Python, SQLAlchemy
+- **Database:** SQLite
+- **Data formats:** Markdown, JSON
 
-# useful abbreviations
-- dn Dīgha Nikāya
-- mn Majjhima Nikāya
-- sn
-- an
-- kn
+## Scope
 
-# range
-- vinaya
-- sutta EBTs, dn, mn, sn, an, kn1-9
+Vinaya + Sutta Piṭaka EBTs: DN, MN, SN, AN, KN 1–9
 
+## Development Stages
 
-# sources
-1. DPD Massive Table of Sutta Data 
-https://docs.google.com/spreadsheets/d/1sR8NT204STTwOoDrr9GBjhXVYEn0qqZTxgjoLKMmaaE/edit?usp=sharing. 
-Mapping for each sutta number and name in each different data source   
+- [ ] 0. Planning
+- [ ] 1. Data collection — build database, extract from all sources
+- [ ] 2. Prompting / processing
+- [ ] 3. Front end
 
-2. CST Chaṭṭha Saṅgāyana Tipiṭaka (6th council)
-- Repo https://github.com/vipassanatech/tipitaka-xml
-- Roman script https://github.com/VipassanaTech/tipitaka-xml/tree/main/romn
-- Deva https://github.com/VipassanaTech/tipitaka-xml/tree/main/deva
-- XML UTF16
-- Use Beautiful Soup to extract. 
-- See https://github.com/digitalpalidictionary/dpd-db/blob/95830f8502c32e13d71963747ad4600e65e8de3c/scripts/build/cst4_xml_to_txt.py for a typical extraction method
-- CST is not per sutta, it's per book, so suttas need to get extracted out of a book
+## Sources
 
-3. Sutta Central
-- Repo is https://github.com/suttacentral/sc-data/
-- Pāḷi texts https://github.com/suttacentral/sc-data/tree/main/sc_bilara_data/root/pli/ms
-- English Translations https://github.com/suttacentral/sc-data/blob/main/sc_bilara_data/translation/en/sujato/sutta/
-- key in the pāḷi text matches the key in the English translation
+### 1. DPD Massive Table of Sutta Data
 
-4. TBW The Buddha's words
-- ZIP https://drive.google.com/drive/folders/1HawM4A_Ns37VGpHgH4YFpkkJpjtpNLEw
-- offline website
-- Online version https://find.dhamma.gift/bw/dn/dn1.html
-- Use Bhikkhu Bodhi not Sujāto
+- [Google Spreadsheet](https://docs.google.com/spreadsheets/d/1sR8NT204STTwOoDrr9GBjhXVYEn0qqZTxgjoLKMmaaE/edit?usp=sharing)
+- Mapping for each sutta number and name across all different data sources
 
-5. Dhammatalk.org 
-- Website https://www.dhammatalks.org/suttas/
-- No known repo, scrape it!
-- Partial list of suttas
+### 2. CST — Chaṭṭha Saṅgāyana Tipiṭaka (6th Council)
 
-6. Pa Auk AI Translations
-- Website https://tipitaka.paauksociety.org/
-- Repo with sqlite sb https://github.com/digitalpalidictionary/tipitaka-translation-db look in releases!
-- Column is `english_translation` in each table
+- [Repo](https://github.com/vipassanatech/tipitaka-xml)
+- [Roman script](https://github.com/VipassanaTech/tipitaka-xml/tree/main/romn)
+- [Devanagari](https://github.com/VipassanaTech/tipitaka-xml/tree/main/deva)
+- Format: XML, UTF-16
+- Use BeautifulSoup to extract — see [this extraction example](https://github.com/digitalpalidictionary/dpd-db/blob/95830f8502c32e13d71963747ad4600e65e8de3c/scripts/build/cst4_xml_to_txt.py)
+- Note: CST is organised per book, not per sutta — suttas must be extracted from within each book
 
-7. ePitaka AI translation
-- Website https://epitaka.org/tpk/
-- Repo ??
-- find the coder and the repo
+### 3. SuttaCentral
 
-8. Indian Spoken ENglish Translation
-9. 10. Hindi, Kannada, Telugu, Tamil, Marathi Translations, etc. etc. 
+- [Repo](https://github.com/suttacentral/sc-data/)
+- [Pāḷi texts](https://github.com/suttacentral/sc-data/tree/main/sc_bilara_data/root/pli/ms)
+- [English translations (Sujato)](https://github.com/suttacentral/sc-data/blob/main/sc_bilara_data/translation/en/sujato/sutta/)
+- Keys in the Pāḷi text match keys in the English translation (bilara JSON format)
 
-# Stages
-0. Planning
-1. Data collection
-    - Building the database
-    - extracting from all the sources
-2. Prompting
-3. Front End    
+### 4. TBW — The Buddha's Words (Bhikkhu Bodhi)
 
-# github collaborators
-ksk_235
-bdhrs
+- [Download ZIP](https://drive.google.com/drive/folders/1HawM4A_Ns37VGpHgH4YFpkkJpjtpNLEw) — offline website
+- [Online version](https://find.dhamma.gift/bw/dn/dn1.html)
+- Use Bhikkhu Bodhi translations (not Sujato)
 
+### 5. Dhammatalks.org (Bhikkhu Thanissaro)
+
+- [Website](https://www.dhammatalks.org/suttas/)
+- No known repo — scrape required
+- Partial list of suttas only
+
+### 6. Pa Auk AI Translations
+
+- [Website](https://tipitaka.paauksociety.org/)
+- [Repo](https://github.com/digitalpalidictionary/tipitaka-translation-db) — find DB in Releases
+- Column: `english_translation` in each table
+
+### 7. ePitaka AI Translation
+
+- [Website](https://epitaka.org/tpk/)
+- Repo unknown — find the developer and repo
+
+### 8. Indian Spoken English Translation
+
+### 9... Hindi, Kannada, Telugu, Tamil, Marathi, and other Indian language translations
