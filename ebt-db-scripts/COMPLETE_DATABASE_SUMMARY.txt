@@ -1,0 +1,43 @@
+======================================================================
+COMPLETE DATABASE SUMMARY - ALL SOURCES
+======================================================================
+
+Source Codes:
+  sc           (SC) - Sutta Central by Various
+  tb           (TBW) - The Buddha's Words by Bhikkhu Bodhi
+  sujato       (Sujato) - Bhikkhu Sujato by Bhikkhu Sujato
+  bodhi        (Bodhi) - Bhikkhu Bodhi by Bhikkhu Bodhi
+  dt           (DT) - Dhamma Talks by Thanissaro Bhikkhu
+
+----------------------------------------------------------------------
+SC (Sutta Central) - Sujato Translation:
+  Digha        (sc_dn): 34
+  Majjhima     (sc_mn): 152
+  Samyutta     (sc_sn): 1819
+  Anguttara    (sc_an): 1408
+  Khuddaka     (sc_kn): 628
+
+----------------------------------------------------------------------
+TBW (The Buddha's Words) - Bhikkhu Bodhi:
+  Digha        (tb_dn): 34
+  Majjhima     (tb_mn): 152
+  Samyutta     (tb_sn): 1844
+  Anguttara    (tb_an): 1619
+  Khuddaka     (tb_kn): 230
+
+----------------------------------------------------------------------
+DT (Dhamma Talks) - Thanissaro Bhikkhu:
+  Digha        (dt_dn): 14
+  Majjhima     (dt_mn): 105
+  Samyutta     (dt_sn): 2
+  Anguttara    (dt_an): 0
+
+----------------------------------------------------------------------
+Total SC Records:  4041
+Total TBW Records: 3879
+Total DT Records:  121
+GRAND TOTAL:        8041
+----------------------------------------------------------------------
+
+Database: EBT_Suttas.db
+======================================================================
