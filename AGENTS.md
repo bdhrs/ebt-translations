@@ -15,7 +15,7 @@ A database and toolset for collecting, comparing, and presenting multiple transl
 
 ```
 ebt-db-scripts/     # scraping and database build scripts
-src/                # main source package
+ebt_translations/   # main source package
 tests/              # test suite
 data/
   db/               # SQLite databases (EBT_Suttas.db, EBT_Unified.db)
@@ -34,14 +34,13 @@ uv run python ebt-db-scripts/scrape_tp.py
 uv run python ebt-db-scripts/scrape_all_sources.py
 ```
 
-## Environment Variables
+## Paths
 
-Override default data paths if needed:
+Project paths are defined in `ebt_translations/paths.py`.
 
-- `EBT_PROJECT_ROOT`
-- `EBT_OLD_DB`
-- `EBT_UNIFIED_DB`
-- `EBT_EXCEL_FILE`
+- Use Python `pathlib.Path` for all filesystem path handling.
+- Do not introduce environment-variable based path configuration.
+- Keep project data under `data/db/` and `data/input/`.
 
 ## Rules
 
@@ -50,3 +49,4 @@ Override default data paths if needed:
 - Do not modify `.env` or `.ini` files.
 - Keep code simple — no over-engineering.
 - Do not add unnecessary comments.
+- Always use `pathlib.Path` in Python code for paths.

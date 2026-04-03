@@ -4,7 +4,8 @@ import time
 import re
 from bs4 import BeautifulSoup
 
-DB = r"C:\Users\ariha\Documents\ebt-translations\DB\EBT_Suttas.db"
+from ebt_translations.paths import OLD_DB_PATH, ensure_data_directories
+
 BASE_URL = "https://tipitaka.paauksociety.org"
 
 BOOK_RANGES = {
@@ -95,18 +96,19 @@ def find_sutta_number_in_content(html_content, bookno):
             if match:
                 return int(match.group(1))
                 
-    except:
+    except Exception:
         pass
     
     return None
 
 def import_tp_data():
-    conn = sqlite3.connect(DB)
+    ensure_data_directories()
+    conn = sqlite3.connect(OLD_DB_PATH)
     cur = conn.cursor()
     
     print("Starting TP data import...")
-    print(f"Target tables: tp_dn, tp_mn, tp_sn, tp_an, tp_kn (English)")
-    print(f"Target tables: tp_dn_hin, tp_mn_hin, tp_sn_hin, tp_an_hin, tp_kn_hin (Hindi)")
+    print("Target tables: tp_dn, tp_mn, tp_sn, tp_an, tp_kn (English)")
+    print("Target tables: tp_dn_hin, tp_mn_hin, tp_sn_hin, tp_an_hin, tp_kn_hin (Hindi)")
     print()
     
     for nikaya, (start, end) in BOOK_RANGES.items():

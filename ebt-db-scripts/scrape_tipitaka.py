@@ -1,12 +1,11 @@
 import sqlite3
-import os
 import re
 import requests
 from bs4 import BeautifulSoup
 import time
 import json
 
-DB = r"C:\Users\ariha\Documents\ebt-translations\DB\EBT_Suttas.db"
+from ebt_translations.paths import OLD_DB_PATH, ensure_data_directories
 
 def get_tree_json(script):
     url = f"https://tipitaka.org/{script}/tree.json"
@@ -18,7 +17,7 @@ def get_tree_json(script):
             try:
                 text = content.decode(enc)
                 return json.loads(text)
-            except:
+            except Exception:
                 continue
         
         return json.loads(content.decode('utf-8', errors='ignore'))
@@ -31,7 +30,7 @@ def extract_sutta_info(text):
         num_match = re.match(r'(\d+)\.\s*(.+)', text)
         if num_match:
             return num_match.group(1), num_match.group(2).strip()
-    except:
+    except Exception:
         pass
     return None, None
 
@@ -44,7 +43,7 @@ def download_sutta(url):
             try:
                 text = content.decode(enc)
                 break
-            except:
+            except Exception:
                 continue
         else:
             text = content.decode('utf-8', errors='ignore')
@@ -60,7 +59,8 @@ def download_sutta(url):
     return None
 
 def scrape_tipitaka():
-    conn = sqlite3.connect(DB)
+    ensure_data_directories()
+    conn = sqlite3.connect(OLD_DB_PATH)
     c = conn.cursor()
     
     total_downloaded = 0
@@ -72,7 +72,7 @@ def scrape_tipitaka():
         
         tree = get_tree_json(script)
         if not tree:
-            print(f"Failed to get tree")
+            print("Failed to get tree")
             continue
         
         results = []
@@ -149,7 +149,7 @@ def scrape_tipitaka():
                     nikaya_stats[item['nikaya']] = nikaya_stats.get(item['nikaya'], 0) + 1
                     total_downloaded += 1
                     
-                except Exception as e:
+                except Exception:
                     pass
             
             time.sleep(0.3)
