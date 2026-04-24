@@ -1,7 +1,71 @@
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing
 .pytest_cache/
+.coverage
+htmlcov/
+*.cover
+
+# Virtual environments
 .venv/
-*.pyc
-data/db/*.db
-data/input/*
-!data/input/.gitkeep
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Database files (never commit)
+*.db
+*.sqlite
+*.sqlite3
+
+# Data folders (all local data)
+data/
+.sc/*
+
+# Large external data folders
+sc-data/
+sc-data-local/
+sc-data-main/
+bw2_20260118/
+tipitaka-translation-db-main/
+tipitaka-xml-main/
+pau_db/
+
+# Logs
+*.log
+
+# Plans and drafts
+docs/plans/
+
+# Claude/Cline continue folders
+.continue/
+
+# OS
+.DS_Store
+Thumbs.db
