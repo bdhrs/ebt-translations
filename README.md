@@ -2,157 +2,144 @@
 
 A database and toolset for collecting, comparing, and presenting multiple translations of Early Buddhist Texts (EBTs).
 
-## Project Overview
-
-This project aggregates Buddhist suttas from multiple English translation sources into a unified database:
-
-- **SuttaCentral** (SC) – Bhikkhu Sujato translations
-- **The Buddha's Words** (TBW) – Bhikkhu Bodhi translations  
-- **Dhamma Talks** (DT) – Thanissaro Bhikkhu translations
-- **Access to Insight** (ATI) – Various translator translations
-
-### Scope
-
-- Digha Nikaya (DN) – 34 suttas
-- Majjhima Nikaya (MN) – 152 suttas
-- Samyutta Nikaya (SN) – 2,169 suttas
-- Anguttara Nikaya (AN) – 1,743 suttas
-- Khuddaka Nikaya (KN) – 2,720 suttas
-
-**Total**: ~6,837 suttas
-
----
-
-## What Problem It Solves
-
-Different Buddhist translation sources use different:
-- Sutta ID formats
-- Organization schemes  
-- Website structures
-
-This project normalizes all translations and links them to a canonical sutta list (`sutta_master`), enabling:
-- Cross-source comparison
-- Translation quality analysis
-- Multi-source datasets for AI training
-
----
-
-## Architecture
-
-```
-ebt-translations/
-├── ebt_translations/      # Core package
-├── ebt-db-scripts/        # CLI scripts
-├── data/
-│   ├── db/               # SQLite (gitignored)
-│   ├── input/            # Input files (gitignored)
-│   ├── output/           # Generated datasets
-│   └── reports/         # Coverage reports
-├── docs/                 # Documentation
-├── agents/               # AI agent instructions
-└── README.md
-```
-
----
-
 ## Setup
 
-### UV Workflow
+This repo now uses `uv` so Windows, macOS, and Linux users can run the same commands.
 
-Instructions to pull and run the UV workflow:
+1. Install `uv`.
+2. Clone the repo.
+3. Run `uv sync`.
+
+That creates a local `.venv` and installs the project dependencies.
+
+The day-to-day command pattern is the same on every platform:
 
 ```bash
-git pull origin main
 uv sync
-uv run python ebt-db-scripts/run_pipeline.py
-optional scripts
 uv run pytest -v
+uv run python ebt-db-scripts/download_massive_table.py
+uv run python ebt-db-scripts/build_unified_db.py
 ```
 
-### Steps Explained
+## Project Data Layout
 
-1. **git pull origin main** – Get latest code
-2. **uv sync** – Install dependencies
-3. **run_pipeline.py** – Run main data pipeline
-4. **optional scripts** – Run specific tasks (coverage, etc.)
-5. **pytest -v** – Run tests
+By default the scripts read and write project data inside this repo:
 
-### Requirements
+- `data/db/EBT_Suttas.db`
+- `data/db/EBT_Unified.db`
+- `data/input/Massive Table of Sutta Data.xlsx`
 
-- Python 3.13+
-- uv (package manager)
+The `data/db/` and `data/input/` directories are created automatically when needed.
 
-### Project Data
-
-Local data directories (auto-created, gitignored):
-- `data/db/EBT_Suttas.db` – Legacy database
-- `data/db/EBT_Unified.db` – Current unified database
-- `data/input/Massive Table of Sutta Data.xlsx` – Sutta mappings
-
----
+All project paths are defined in `ebt_translations/paths.py`.
+If the repo owner wants different locations, edit that file directly.
 
 ## Running Scripts
 
-### Main Pipeline
+All platforms use the same command style:
+
+```bash
+uv run python ebt-db-scripts/download_massive_table.py
+uv run python ebt-db-scripts/check_unified_schema.py
+uv run python ebt-db-scripts/build_unified_db.py
+uv run python ebt-db-scripts/scrape_dt.py
+uv run python ebt-db-scripts/scrape_tipitaka.py
+uv run python ebt-db-scripts/scrape_tp.py
+uv run python ebt-db-scripts/scrape_all_sources.py
+uv run python ebt-db-scripts/run_pipeline.py
+```
+
+## Expected Local Inputs
+
+Some scripts depend on local files or previously built databases:
+
+- `build_unified_db.py` expects `data/db/EBT_Suttas.db`
+- `download_massive_table.py` fetches `data/input/Massive Table of Sutta Data.xlsx`
+- scraper scripts may also expect source-specific tables to already exist in `EBT_Suttas.db`
+
+## Pipeline
+
+To run the repo in its current expected order:
+
 ```bash
 uv run python ebt-db-scripts/run_pipeline.py
 ```
 
-### Individual Scripts
-```bash
-uv run python ebt-db-scripts/build_unified_db.py
-uv run python ebt-db-scripts/check_unified_schema.py
-uv run python ebt-db-scripts/check_coverage.py
-```
+That pipeline runs:
 
-### Tests
-```bash
-uv run pytest -v
-```
+1. `download_massive_table.py`
+2. `scrape_dt.py`
+3. `scrape_tipitaka.py`
+4. `scrape_tp.py`
+5. `build_unified_db.py`
+6. `check_unified_schema.py`
+7. `scrape_all_sources.py`
 
----
+So the setup is portable, but a full successful run still depends on having the required source data locally.
 
-## Data Sources
+## Tech Stack
 
-| Source | Coverage | Status |
-|--------|----------|--------|
-| SC | 69% | Primary |
-| TBW | 62% | Maps to SC |
-| DT | 15% | Scraping exhausted |
-| ATI | 14% | Offline only |
+- **Language:** Python
+- **Database:** SQLite
+- **Data formats:** Markdown, JSON, Excel
 
-See `docs/DATA_SOURCES.md` for details.
+## Scope
 
----
+Vinaya + Sutta Piṭaka EBTs: DN, MN, SN, AN, KN 1–9
 
-## Key Files
+## Development Stages
 
-- `ebt_translations/paths.py` – Path configuration
-- `ebt_translations/pipeline.py` – Main pipeline
-- `ebt_translations/ingestion/` – Data ingestion modules
-- `ebt_translations/unified/` – Unified pipeline
+- [ ] 0. Planning
+- [ ] 1. Data collection — build database, extract from all sources
+- [ ] 2. Prompting / processing
+- [ ] 3. Front end
 
----
+## Sources
 
-## Cross-Platform
+### 1. DPD Massive Table of Sutta Data
 
-This project uses `uv`, making commands identical on:
-- Windows
-- macOS
-- Linux
+- [Google Spreadsheet](https://docs.google.com/spreadsheets/d/1sR8NT204STTwOoDrr9GBjhXVYEn0qqZTxgjoLKMmaaE/edit?usp=sharing)
+- Mapping for each sutta number and name across all different data sources
 
----
+### 2. CST — Chaṭṭha Saṅgāyana Tipiṭaka (6th Council)
 
-## Documentation
+- [Repo](https://github.com/vipassanatech/tipitaka-xml)
+- [Roman script](https://github.com/VipassanaTech/tipitaka-xml/tree/main/romn)
+- [Devanagari](https://github.com/VipassanaTech/tipitaka-xml/tree/main/deva)
+- Format: XML, UTF-16
+- Use BeautifulSoup to extract — see [this extraction example](https://github.com/digitalpalidictionary/dpd-db/blob/95830f8502c32e13d71963747ad4600e65e8de3c/scripts/build/cst4_xml_to_txt.py)
+- Note: CST is organised per book, not per sutta — suttas must be extracted from within each book
 
-- `docs/PROJECT_ANALYSIS.md` – Analysis and issues report
-- `docs/ARCHITECTURE.md` – System design
-- `docs/DATA_SOURCES.md` – Source documentation
-- `agents/AGENTS.md` – Agent instructions
+### 3. SuttaCentral
 
----
+- [Repo](https://github.com/suttacentral/sc-data/)
+- [Pāḷi texts](https://github.com/suttacentral/sc-data/tree/main/sc_bilara_data/root/pli/ms)
+- [English translations (Sujato)](https://github.com/suttacentral/sc-data/blob/main/sc_bilara_data/translation/en/sujato/sutta/)
+- Keys in the Pāḷi text match keys in the English translation (bilara JSON format)
 
-## License
+### 4. TBW — The Buddha's Words (Bhikkhu Bodhi)
 
-- Translations: Various (CC BY-NC-SA 4.0, Public Domain, etc.)
-- Code: MIT
+- [Download ZIP](https://drive.google.com/drive/folders/1HawM4A_Ns37VGpHgH4YFpkkJpjtpNLEw) — offline website
+- [Online version](https://find.dhamma.gift/bw/dn/dn1.html)
+- Use Bhikkhu Bodhi translations (not Sujato)
+
+### 5. Dhammatalks.org (Bhikkhu Thanissaro)
+
+- [Website](https://www.dhammatalks.org/suttas/)
+- No known repo — scrape required
+- Partial list of suttas only
+
+### 6. Pa Auk AI Translations
+
+- [Website](https://tipitaka.paauksociety.org/)
+- [Repo](https://github.com/digitalpalidictionary/tipitaka-translation-db) — find DB in Releases
+- Column: `english_translation` in each table
+
+### 7. ePitaka AI Translation
+
+- [Website](https://epitaka.org/tpk/)
+- Repo unknown — find the developer and repo
+
+### 8. Indian Spoken English Translation
+
+### 9... Hindi, Kannada, Telugu, Tamil, Marathi, and other Indian language translations
